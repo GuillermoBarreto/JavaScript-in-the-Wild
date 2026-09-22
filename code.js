@@ -47,19 +47,24 @@ let coords = {
 //fetch stuff 
 
         fetch(queryURL)
-        .then((response) => response.json())
-        .then ((data) => {
-            console.log(data);
-            let img = document.createElement("img");
-            document.body.append(img);
-            let i = 0;
-            setInterval(function() {
-                const imageUrl = constructImageURL(data.photos.photo[i]);
-                img.src = imageUrl;
-                if(i + 1 === data.photos.photo.length){
-                   i = 0
-                } else {
-                i++;
-                }
-            }, 2000);
-        });
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`Flickr request failed with status ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    const photos = (data.photos && data.photos.photo) || [];
+    if (photos.length === 0) {
+      console.log("No photos found for this search.");
+      return;
+    }
+    const img = document.createElement("img");
+    document.body.append(img);
+    let i = 0;
+    setInterval(function () {
+      img.src = constructImageURL(photos[i]);
+      i = (i + 1) % photos.length;
+    }, 2000);
+  })
+  .catch((err) => console.error("Failed to load Flickr photos:", err));
