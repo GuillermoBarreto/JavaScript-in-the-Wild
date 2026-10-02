@@ -4,7 +4,12 @@ let coords = {
 };
 
 if ("geolocation" in navigator) {
-  navigator.geolocation.watchPosition(success, geoError);
+  const watchId = navigator.geolocation.watchPosition(success, geoError);
+  // Stop tracking the user's location when the page goes away.
+  // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/clearWatch
+  window.addEventListener("pagehide", () =>
+    navigator.geolocation.clearWatch(watchId)
+  );
 } else {
   console.error("Geolocation is not supported by this browser.");
 }
