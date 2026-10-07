@@ -74,7 +74,10 @@ fetch(queryURL)
     document.body.append(img);
     let i = 0;
     setInterval(function () {
-      img.src = constructImageURL(photos[i]);
+      const photo = photos[i];
+      img.src = constructImageURL(photo);
+      // The slideshow image needs a text alternative for screen readers.
+      img.alt = photo.title ? `Flickr photo: ${photo.title}` : "Flickr photo";
       i = (i + 1) % photos.length;
     }, 2000);
   })
