@@ -25,7 +25,7 @@ function success(pos) {
     coords.latitude = crd.latitude;
     coords.longitude = crd.longitude;
     console.log("Your coordinate has changed");
-    console.log(`latitud: ${coords.latitude} longitud: ${coords.longitude}`);
+    console.log(`latitude: ${coords.latitude} longitude: ${coords.longitude}`);
   } else {
     console.log("your coordinates are the same.");
   }
